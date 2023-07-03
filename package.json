@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "grunt-screeps": "^1.5.0",
+    "screeps": "4.2.14",
+    "screeps-api": "1.16.0",
+    "screeps-profiler": "2.0.1",
+    "screepsmod-admin-utils": "1.29.0",
+    "screepsmod-auth": "2.7.1",
+    "screepsmod-mongo": "2.10.4"
+  }
+}
