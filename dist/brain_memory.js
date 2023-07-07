@@ -1,7 +1,9 @@
 'use strict';
 
+require('config');
+
 let roomMemoryInit = function() {
-    if (!Memory.rooms) {
+    if (!Memory.rooms || config.debugMode) {
         Memory.rooms = {};
     }
     for (const roomName in Game.rooms){

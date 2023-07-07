@@ -4,6 +4,10 @@ const {prepareMemory} = require('./brain_memory');
 const role = require('role');
 
 module.exports.execute = function() {
+    // for (const f in Game.flags) {
+    //     const flag = Game.flags[f];
+    //     flag.remove();
+    // }
     prepareMemory();
     for (const roomName in Game.rooms){
         let room = Game.rooms[roomName];
@@ -14,7 +18,7 @@ module.exports.execute = function() {
     for(const s in Game.spawns){
         const spawn = Game.spawns[s];
 
-        // 暂时生成一个采集资源和一个升级控制器的creep，防止控制器降级
+        // TODO 暂时生成一个采集资源和一个升级控制器的creep，防止控制器降级
         const harvesters = spawn.room.find(FIND_MY_CREEPS, { filter: 
             (o) =>  {
                 return o.memory.role_name === 'harvester';

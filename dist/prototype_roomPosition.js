@@ -13,7 +13,7 @@ RoomPosition.prototype.checkForWall = function() {
 };
 
 RoomPosition.prototype.vaildPosition = function(opts = {}) {
-    if (!opts.ignoreBorder && this.isBorder(2)) {
+    if (!opts.ignoreBorder && this.isBorder()) {
         return false;
     }
     if (!opts.ignoreWall && this.checkForWall()) {
@@ -22,6 +22,9 @@ RoomPosition.prototype.vaildPosition = function(opts = {}) {
     return true;
 }
 
+/**
+ * 返回四周的位置
+ */
 RoomPosition.prototype.getAllAdjacentPositions = function* (){
     const adjacentPos = [
         [0, -1],
@@ -41,6 +44,10 @@ RoomPosition.prototype.getAllAdjacentPositions = function* (){
     }
 }
 
+/**
+ * 返回周围符合条件的空地
+ * @param  {...any} args 
+ */
 RoomPosition.prototype.findNearPosition = function* (...args) {
     for (const pos of this.getAllAdjacentPositions()){
         if (!pos.vaildPosition(...args)){continue;}
@@ -48,21 +55,39 @@ RoomPosition.prototype.findNearPosition = function* (...args) {
     }
 }
 
+/**
+ * 
+ * @param  {...any} args 
+ * @returns 周围最好的一个位置。标准为这些点周围符合条件的空地的数量。
+ */
 RoomPosition.prototype.getBestNearPosition = function(...args) {
     return _.max(Array.from(this.findNearPosition(...args)), (pos) => Array.from(pos.findNearPosition(...args)).length);
 };
 
+/**
+ * 
+ * @param  {...any} args 
+ * @returns 周围最差的一个位置。标准为这些点周围符合条件的空地的数量。
+ */
 RoomPosition.prototype.getWorseNearPosition = function(...args) {
     return _.max(Array.from(this.findNearPosition(...args)), (pos) => -1 * Array.from(pos.findNearPosition(...args)).length);
 };
 
+/**
+ * 
+ * @param {*} position 
+ * @returns 与某一点的位置
+ */
 RoomPosition.prototype.getDistanceToPosition = function(position){
     return (this.x - position.x) * (this.x - position.x) + (this.y - position.y) * (this.y - position.y);
 };
 
-/*
-排序数组中对象的位置与某一点的距离的排序，默认从小到大
-*/
+/**
+ * 按照与positions中的位置的距离进行排序，默认从小到大
+ * @param {array} positions 
+ * @param {bool} reverse 
+ * @returns 
+ */
 RoomPosition.prototype.sortPositionsDistance = function(positions, reverse=false) {
     let distances = [];
     let distances_map = {};
@@ -81,3 +106,14 @@ RoomPosition.prototype.sortPositionsDistance = function(positions, reverse=false
     else return distances1;
 }
 
+/**
+ * 判断是否在positions中
+ * @param {array} positions 
+ * @returns 
+ */
+RoomPosition.prototype.isInPositions = function(positions) {
+    for (const pos of positions){
+        if (this.isEqualTo(pos.x, pos.y)){return true;}
+    }
+    return false;
+}
